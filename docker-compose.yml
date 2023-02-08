@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  webpack-rails:
+    build: .
+    container_name: webpack-rails
+    ports:
+      - 3000:3000
+    entrypoint: redis-server
+    tty: true
+    volumes:
+      - ./:/app
+    networks:
+      - webpack-rails-net
+    depends_on:
+      - redis
+  
+  redis: 
+    image: redis:7.0
+    networks:
+      - webpack-rails-net
+
+networks:
+  webpack-rails-net:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
